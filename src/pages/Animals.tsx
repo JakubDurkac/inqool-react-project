@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import GenericTable from "../components/GenericTable";
+import { fetchObjects } from "../utils/apiRequests";
 
 interface Animal {
   id: string;
@@ -10,23 +10,16 @@ interface Animal {
 }
 
 const ANIMAL_ENTITY_FIELDS: { label: string; key: keyof Animal }[] = [
+  { label: "ID", key: "id" },
   { label: "Name", key: "name" },
   { label: "Type", key: "type" },
   { label: "Age", key: "age" },
 ];
 
-const fetchAnimals = async () => {
-  const { data } = await axios.get<Animal[]>(
-    "https://inqool-interview-api.vercel.app/api/animals"
-  );
-
-  return data;
-};
-
 const Animals = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["animals"],
-    queryFn: fetchAnimals,
+    queryFn: () => fetchObjects<Animal>("animals"),
   });
 
   if (isLoading || !data) return <p>Loading...</p>;

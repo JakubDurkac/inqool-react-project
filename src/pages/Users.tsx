@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import GenericTable from "../components/GenericTable";
+import { fetchObjects } from "../utils/apiRequests";
 
 interface User {
   id: string;
@@ -10,23 +10,16 @@ interface User {
 }
 
 const USER_ENTITY_FIELDS: { label: string; key: keyof User }[] = [
+  { label: "ID", key: "id" },
   { label: "Name", key: "name" },
   { label: "Gender", key: "gender" },
   { label: "Banned", key: "banned" },
 ];
 
-const fetchUsers = async () => {
-  const { data } = await axios.get<User[]>(
-    "https://inqool-interview-api.vercel.app/api/users"
-  );
-
-  return data;
-};
-
 const Users = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["users"],
-    queryFn: fetchUsers,
+    queryFn: () => fetchObjects<User>("users"),
   });
 
   if (isLoading || !data) return <p>Loading...</p>;
