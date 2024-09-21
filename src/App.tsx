@@ -6,16 +6,14 @@ import NoPage from "./pages/NoPage";
 
 const App = () => {
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/animals" element={<Animals />} />
-          <Route path="*" element={<NoPage />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/animals" element={<Animals />} />
+        <Route path="*" element={<NoPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

@@ -1,6 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import GenericTable from "../components/GenericTable";
-import { fetchObjects } from "../utils/apiRequests";
+import {
+  addObject,
+  deleteObjectWithId,
+  fetchObjects,
+} from "../utils/apiRequests";
 
 interface Animal {
   id: string;
@@ -9,6 +13,7 @@ interface Animal {
   age: number;
 }
 
+const ENDPOINT = "animals";
 const ANIMAL_ENTITY_FIELDS: { label: string; key: keyof Animal }[] = [
   { label: "ID", key: "id" },
   { label: "Name", key: "name" },
@@ -17,15 +22,41 @@ const ANIMAL_ENTITY_FIELDS: { label: string; key: keyof Animal }[] = [
 ];
 
 const Animals = () => {
+  const queryClient = useQueryClient();
   const { data, error, isLoading } = useQuery({
-    queryKey: ["animals"],
-    queryFn: () => fetchObjects<Animal>("animals"),
+    queryKey: [ENDPOINT],
+    queryFn: () => fetchObjects<Animal>(ENDPOINT),
+  });
+
+  const addUserMutation = useMutation({
+    mutationFn: (newObject: Animal) => {
+      return addObject(ENDPOINT, newObject);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ENDPOINT] });
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: (objectId: string) => {
+      return deleteObjectWithId<Animal>(ENDPOINT, objectId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ENDPOINT] });
+    },
   });
 
   if (isLoading || !data) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  return <GenericTable data={data} fields={ANIMAL_ENTITY_FIELDS} />;
+  return (
+    <GenericTable
+      endpoint={ENDPOINT}
+      data={data}
+      fields={ANIMAL_ENTITY_FIELDS}
+      onDelete={(id) => deleteUserMutation.mutate(id)}
+    />
+  );
 };
 
 export default Animals;
