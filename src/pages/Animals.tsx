@@ -1,3 +1,4 @@
+import { ActionOnSelected } from "../types";
 import GenericEntity from "./GenericEntity";
 
 interface Animal {
@@ -20,6 +21,7 @@ const Animals = () => {
     <GenericEntity<Animal>
       endpoint={ENDPOINT}
       entityFields={ANIMAL_ENTITY_FIELDS}
+      extraActionsOnSelected={[]}
     />
   );
 };

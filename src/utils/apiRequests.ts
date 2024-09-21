@@ -17,3 +17,12 @@ export const addObject = async <T>(endpoint: string, newObject: T): Promise<T> =
   const { data } = await axios.post<T>(`${API_BASE_URL}/${endpoint}`, newObject);
   return data;
 };
+
+export const patchObject = async <T>(
+  endpoint: string, 
+  id: string, 
+  updatedAttributes: Partial<T>
+): Promise<T> => {
+  const { data } = await axios.patch<T>(`${API_BASE_URL}/${endpoint}/${id}`, updatedAttributes);
+  return data;
+};

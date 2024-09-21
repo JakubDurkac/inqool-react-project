@@ -5,16 +5,18 @@ import {
   fetchObjects,
 } from "../utils/apiRequests";
 import GenericTable from "../components/GenericTable";
-import { Endpoint, Identifiable } from "../types";
+import { ActionOnSelected, Endpoint, Identifiable } from "../types";
 
 type EntityProps<T extends Identifiable> = {
   endpoint: Endpoint;
   entityFields: { label: string; key: keyof T }[];
+  extraActionsOnSelected: ActionOnSelected<T>[];
 };
 
 const GenericEntity = <T extends Identifiable>({
   endpoint,
   entityFields,
+  extraActionsOnSelected,
 }: EntityProps<T>) => {
   const queryClient = useQueryClient();
 
@@ -46,6 +48,7 @@ const GenericEntity = <T extends Identifiable>({
       data={data}
       fields={entityFields}
       onDelete={(id: string) => deleteMutation.mutate(id)}
+      extraActionsOnSelected={extraActionsOnSelected}
     />
   );
 };

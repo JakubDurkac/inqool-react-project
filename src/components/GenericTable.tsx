@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Endpoint, Identifiable } from "../types";
+import { ActionOnSelected, Endpoint, Identifiable } from "../types";
 
-type Props<T extends Identifiable> = {
+type TableProps<T extends Identifiable> = {
   endpoint: Endpoint;
   data: T[];
   fields: { label: string; key: keyof T }[];
   onDelete: (id: string) => void;
+  extraActionsOnSelected: ActionOnSelected<T>[];
 };
 
 const GenericTable = <T extends Identifiable>({
@@ -13,12 +14,37 @@ const GenericTable = <T extends Identifiable>({
   data,
   fields,
   onDelete,
-}: Props<T>) => {
+  extraActionsOnSelected,
+}: TableProps<T>) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
     <>
+      {extraActionsOnSelected.map((action) => {
+        const isDisabledButton = selectedIndex === -1;
+        const { newLabel, newStyleClass } = isDisabledButton
+          ? { newLabel: "", newStyleClass: "" }
+          : action.buttonOnObjectSelect(data[selectedIndex]);
+        return (
+          <button
+            disabled={isDisabledButton}
+            type="button"
+            className={`btn ${
+              isDisabledButton ? "btn-outline-primary" : newStyleClass
+            }`}
+            onClick={() => {
+              if (selectedIndex !== -1) {
+                setSelectedIndex(-1);
+                action.onClick(data[selectedIndex].id, data[selectedIndex]);
+              }
+            }}
+          >
+            {isDisabledButton ? action.buttonLabel : newLabel}
+          </button>
+        );
+      })}
       <button
+        disabled={selectedIndex === -1}
         type="button"
         className="btn btn-outline-danger"
         onClick={() => {
