@@ -1,4 +1,3 @@
-import { ActionOnSelected } from "../types";
 import GenericEntity from "./GenericEntity";
 
 interface Animal {

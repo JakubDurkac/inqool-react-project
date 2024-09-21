@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ActionOnSelected } from "../types";
 import GenericEntity from "./GenericEntity";
 import { patchObject } from "../utils/apiRequests";
 
@@ -20,6 +19,8 @@ const USER_ENTITY_FIELDS: { label: string; key: keyof User }[] = [
 
 const Users = () => {
   const queryClient = useQueryClient();
+
+  // defining ban/unban action on selected User (using API PATCH request)
   const banUserMutation = useMutation({
     mutationFn: (userInfo: { id: string; isBanned: boolean }) => {
       const { id, isBanned } = userInfo;

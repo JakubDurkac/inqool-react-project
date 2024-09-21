@@ -20,11 +20,13 @@ const GenericEntity = <T extends Identifiable>({
 }: EntityProps<T>) => {
   const queryClient = useQueryClient();
 
+  // GET
   const { data, error, isLoading } = useQuery({
     queryKey: [endpoint],
     queryFn: () => fetchObjects<T>(endpoint),
   });
 
+  // POST
   const addMutation = useMutation({
     mutationFn: (newObject: T) => addObject(endpoint, newObject),
     onSuccess: () => {
@@ -32,6 +34,7 @@ const GenericEntity = <T extends Identifiable>({
     },
   });
 
+  // DELETE
   const deleteMutation = useMutation({
     mutationFn: (objectId: string) => deleteObjectWithId(endpoint, objectId),
     onSuccess: () => {
