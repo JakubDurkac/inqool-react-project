@@ -1,10 +1,6 @@
 import { useState } from "react";
+import { Endpoint, Identifiable } from "../types";
 
-interface Identifiable {
-  id: string;
-}
-
-type Endpoint = "users" | "animals";
 type Props<T extends Identifiable> = {
   endpoint: Endpoint;
   data: T[];
@@ -24,7 +20,7 @@ const GenericTable = <T extends Identifiable>({
     <>
       <button
         type="button"
-        className="btn btn-danger"
+        className="btn btn-outline-danger"
         onClick={() => {
           if (selectedIndex !== -1) {
             setSelectedIndex(-1);
