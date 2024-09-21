@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import GenericTable from "../components/GenericTable";
 
 interface User {
   id: string;
@@ -7,6 +8,12 @@ interface User {
   gender: "female" | "male" | "other";
   banned: boolean;
 }
+
+const USER_ENTITY_FIELDS: { label: string; key: keyof User }[] = [
+  { label: "Name", key: "name" },
+  { label: "Gender", key: "gender" },
+  { label: "Banned", key: "banned" },
+];
 
 const fetchUsers = async () => {
   const { data } = await axios.get<User[]>(
@@ -22,32 +29,10 @@ const Users = () => {
     queryFn: fetchUsers,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading || !data) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  return (
-    <table className="table table-light table-striped border-dark">
-      <thead className="table-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Gender</th>
-          <th scope="col">Banned</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data &&
-          data.map((user, index) => (
-            <tr key={user.id}>
-              <th scope="row">{index + 1}</th>
-              <td>{user.name}</td>
-              <td>{user.gender}</td>
-              <td>{user.banned ? "Yes" : "No"}</td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
-  );
+  return <GenericTable data={data} fields={USER_ENTITY_FIELDS} />;
 };
 
 export default Users;
