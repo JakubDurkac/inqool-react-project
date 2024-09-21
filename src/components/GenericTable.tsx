@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { ActionOnSelected, Endpoint, Identifiable } from "../types";
+import { ActionOnSelected, Identifiable } from "../types";
 
 type TableProps<T extends Identifiable> = {
-  endpoint: Endpoint;
   data: T[];
   fields: { label: string; key: keyof T }[];
   onDelete: (id: string) => void;
@@ -10,7 +9,6 @@ type TableProps<T extends Identifiable> = {
 };
 
 const GenericTable = <T extends Identifiable>({
-  endpoint,
   data,
   fields,
   onDelete,
