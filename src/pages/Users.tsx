@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import GenericEntity from "./GenericEntity";
 import { patchObject } from "../utils/apiRequests";
+import { z } from "zod";
 
 interface User {
   id: string;
@@ -16,6 +17,21 @@ const USER_ENTITY_FIELDS: { label: string; key: keyof User }[] = [
   { label: "Gender", key: "gender" },
   { label: "Banned", key: "banned" },
 ];
+
+const VALIDATION_SCHEMA = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters long")
+    .or(z.literal(""))
+    .transform((value) => (value === "" ? undefined : value)),
+  gender: z
+    .enum(["female", "male", "other", ""])
+    .transform((value) => (value === "" ? undefined : value)),
+  banned: z.enum(["true", "false", ""]).transform((value) => {
+    if (value === "") return undefined;
+    return value === "true";
+  }),
+});
 
 const Users = () => {
   const queryClient = useQueryClient();
@@ -48,6 +64,7 @@ const Users = () => {
     <GenericEntity<User>
       endpoint={ENDPOINT}
       entityFields={USER_ENTITY_FIELDS}
+      validationSchema={VALIDATION_SCHEMA}
       extraActionsOnSelected={[banAction]}
     />
   );

@@ -3,19 +3,23 @@ import {
   addObject,
   deleteObjectWithId,
   fetchObjects,
+  patchObject,
 } from "../utils/apiRequests";
 import GenericTable from "../components/GenericTable";
 import { ActionOnSelected, Endpoint, Identifiable } from "../types";
+import { ZodSchema } from "zod";
 
 type EntityProps<T extends Identifiable> = {
   endpoint: Endpoint;
   entityFields: { label: string; key: keyof T }[];
+  validationSchema: ZodSchema;
   extraActionsOnSelected: ActionOnSelected<T>[];
 };
 
 const GenericEntity = <T extends Identifiable>({
   endpoint,
   entityFields,
+  validationSchema,
   extraActionsOnSelected,
 }: EntityProps<T>) => {
   const queryClient = useQueryClient();
@@ -28,7 +32,18 @@ const GenericEntity = <T extends Identifiable>({
 
   // POST
   const addMutation = useMutation({
-    mutationFn: (newObject: T) => addObject(endpoint, newObject),
+    mutationFn: (object: Partial<T>) => addObject(endpoint, object),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [endpoint] });
+    },
+  });
+
+  // PATCH
+  const editMutation = useMutation({
+    mutationFn: (info: { id: string; object: Partial<T> }) => {
+      const { id, object } = info;
+      return patchObject(endpoint, id, object);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [endpoint] });
     },
@@ -49,6 +64,11 @@ const GenericEntity = <T extends Identifiable>({
     <GenericTable
       data={data}
       fields={entityFields}
+      validationSchema={validationSchema}
+      onAdd={(object: Partial<T>) => addMutation.mutate(object)}
+      onEdit={(object: Partial<T>, id: string) =>
+        editMutation.mutate({ id: id, object: object })
+      }
       onDelete={(id: string) => deleteMutation.mutate(id)}
       extraActionsOnSelected={extraActionsOnSelected}
     />
