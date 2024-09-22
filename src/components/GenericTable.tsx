@@ -28,30 +28,44 @@ const GenericTable = <T extends Identifiable>({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(validationSchema),
   });
 
+  const fieldsWithoutId = fields.filter((field) => field.key !== "id");
+
+  const formValues = watch();
+  // check if all inputs are empty
+  const areAllFieldsEmpty = fieldsWithoutId.every((field) => {
+    const value = formValues[field.key as string];
+    return value === "" || value === undefined;
+  });
+
+  // check if there are any empty fields
+  const isAnyFieldEmpty = fieldsWithoutId.some((field) => {
+    const value = formValues[field.key as string];
+    return value === "" || value === undefined;
+  });
+
   return (
     <>
       <form>
-        {fields.map(
-          (field) =>
-            field.key !== "id" && (
-              <div key={field.key as string}>
-                <input
-                  {...register(field.key as string)}
-                  placeholder={field.label}
-                />
-                {errors[field.key as string] && (
-                  <p>{errors[field.key as string]?.message as string}</p>
-                )}
-              </div>
-            )
-        )}
+        {fieldsWithoutId.map((field) => (
+          <div key={field.key as string}>
+            <input
+              {...register(field.key as string)}
+              placeholder={field.label}
+            />
+            {errors[field.key as string] && (
+              <p>{errors[field.key as string]?.message as string}</p>
+            )}
+          </div>
+        ))}
 
         <button
+          disabled={isAnyFieldEmpty}
           className="btn btn-outline-primary"
           onClick={handleSubmit((attributesToUpdate) => {
             console.log(attributesToUpdate);
@@ -62,17 +76,19 @@ const GenericTable = <T extends Identifiable>({
           Add
         </button>
         <button
-          disabled={selectedIndex === -1}
+          disabled={selectedIndex === -1 || areAllFieldsEmpty}
           className="btn btn-outline-primary"
           onClick={handleSubmit((attributesToUpdate) => {
             const attributesToUpdatePartialT = attributesToUpdate as Partial<T>;
             const filteredAttributes = fields.reduce((acc, field) => {
+              // generating object that skips undefined attributes, preparing for PATCH request
               const value = attributesToUpdatePartialT[field.key];
               if (value !== undefined) {
                 acc[field.key] = value;
               }
               return acc;
             }, {} as Partial<T>);
+
             setSelectedIndex(-1);
             onEdit(filteredAttributes, data[selectedIndex].id);
             reset();
