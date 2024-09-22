@@ -3,6 +3,7 @@ import { ActionOnSelected, Identifiable } from "../types";
 import { ZodSchema } from "zod";
 import GenericAddEditForm from "./GenericAddEditForm";
 import GenericActionsOnSelected from "./GenericActionsOnSelected";
+import GenericDeleteButton from "./GenericDeleteButton";
 
 type TableProps<T extends Identifiable> = {
   data: T[];
@@ -43,21 +44,12 @@ const GenericTable = <T extends Identifiable>({
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
       />
-      <button
-        disabled={selectedIndex === -1}
-        type="button"
-        className={`btn ${
-          selectedIndex === -1 ? "btn-outline-light" : "btn-outline-danger"
-        }`}
-        onClick={() => {
-          if (selectedIndex !== -1) {
-            setSelectedIndex(-1);
-            onDelete(data[selectedIndex].id);
-          }
-        }}
-      >
-        Remove Selected
-      </button>
+      <GenericDeleteButton
+        data={data}
+        onDelete={onDelete}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
       <table className="table table-light table-striped table-hover border-dark">
         <thead className="table-dark">
           <tr>
