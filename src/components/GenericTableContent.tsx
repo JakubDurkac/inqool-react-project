@@ -5,6 +5,7 @@ interface ContentProps<T extends Identifiable> {
   fields: { label: string; key: keyof T }[];
   selectedIndex: number;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  filterValues: Record<string, string>;
 }
 
 const GenericTableContent = <T extends Identifiable>({
@@ -12,7 +13,17 @@ const GenericTableContent = <T extends Identifiable>({
   fields,
   selectedIndex,
   setSelectedIndex,
+  filterValues,
 }: ContentProps<T>) => {
+  const filteredData = data.filter((item) =>
+    Object.entries(filterValues).every(([key, filterValue]) => {
+      if (!filterValue) return true; // Include if no filter applied
+      return String(item[key as keyof T])
+        .toLowerCase()
+        .includes(filterValue.toLowerCase());
+    })
+  );
+
   return (
     <table className="table table-light table-striped table-hover border-dark">
       <thead className="table-dark">
@@ -25,7 +36,7 @@ const GenericTableContent = <T extends Identifiable>({
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
+        {filteredData.map((item, index) => (
           <tr
             className={
               index === selectedIndex ? "table-primary border-dark" : ""

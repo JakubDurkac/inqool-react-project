@@ -14,6 +14,7 @@ type EntityProps<T extends Identifiable> = {
   entityFields: { label: string; key: keyof T }[];
   validationSchema: ZodSchema;
   extraActionsOnSelected: ActionOnSelected<T>[];
+  filterAttributes: string[];
 };
 
 const GenericEntity = <T extends Identifiable>({
@@ -21,6 +22,7 @@ const GenericEntity = <T extends Identifiable>({
   entityFields,
   validationSchema,
   extraActionsOnSelected,
+  filterAttributes,
 }: EntityProps<T>) => {
   const queryClient = useQueryClient();
 
@@ -71,6 +73,7 @@ const GenericEntity = <T extends Identifiable>({
       }
       onDelete={(id: string) => deleteMutation.mutate(id)}
       extraActionsOnSelected={extraActionsOnSelected}
+      filterAttributes={filterAttributes}
     />
   );
 };

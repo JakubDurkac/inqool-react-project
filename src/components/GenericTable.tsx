@@ -14,6 +14,7 @@ type TableProps<T extends Identifiable> = {
   onEdit: (object: Partial<T>, id: string) => void;
   onDelete: (id: string) => void;
   extraActionsOnSelected: ActionOnSelected<T>[];
+  filterAttributes: string[];
 };
 
 const GenericTable = <T extends Identifiable>({
@@ -24,9 +25,37 @@ const GenericTable = <T extends Identifiable>({
   onEdit,
   onDelete,
   extraActionsOnSelected,
+  filterAttributes,
 }: TableProps<T>) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [filterValues, setFilterValues] = useState<Record<string, string>>({});
   const fieldsWithoutId = fields.filter((field) => field.key !== "id");
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilterValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const clearFilters = () => {
+    setFilterValues({});
+  };
+
+  const renderFilterForm = () => (
+    <form>
+      {filterAttributes.map((key) => (
+        <div key={key}>
+          <input
+            type="text"
+            placeholder={`Filter by ${key}`}
+            value={filterValues[key] || ""}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ))}
+      <button type="button" onClick={clearFilters}>
+        Clear
+      </button>
+    </form>
+  );
 
   return (
     <>
@@ -51,11 +80,13 @@ const GenericTable = <T extends Identifiable>({
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
       />
+      {renderFilterForm()}
       <GenericTableContent
         data={data}
         fields={fields}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
+        filterValues={filterValues}
       />
     </>
   );

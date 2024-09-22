@@ -16,6 +16,7 @@ const ANIMAL_ENTITY_FIELDS: { label: string; key: keyof Animal }[] = [
   { label: "Age", key: "age" },
 ];
 
+const FILTER_ATTRIBUTES = ["name", "gender"];
 const VALIDATION_SCHEMA = z.object({
   name: z
     .string()
@@ -35,6 +36,7 @@ const Animals = () => {
       entityFields={ANIMAL_ENTITY_FIELDS}
       validationSchema={VALIDATION_SCHEMA}
       extraActionsOnSelected={[]}
+      filterAttributes={FILTER_ATTRIBUTES}
     />
   );
 };

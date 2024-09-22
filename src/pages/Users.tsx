@@ -18,6 +18,7 @@ const USER_ENTITY_FIELDS: { label: string; key: keyof User }[] = [
   { label: "Banned", key: "banned" },
 ];
 
+const FILTER_ATTRIBUTES = ["name"];
 const VALIDATION_SCHEMA = z.object({
   name: z
     .string()
@@ -66,6 +67,7 @@ const Users = () => {
       entityFields={USER_ENTITY_FIELDS}
       validationSchema={VALIDATION_SCHEMA}
       extraActionsOnSelected={[banAction]}
+      filterAttributes={FILTER_ATTRIBUTES}
     />
   );
 };
