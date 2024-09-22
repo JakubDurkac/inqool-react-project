@@ -4,6 +4,7 @@ import { ZodSchema } from "zod";
 import GenericAddEditForm from "./GenericAddEditForm";
 import GenericActionsOnSelected from "./GenericActionsOnSelected";
 import GenericDeleteButton from "./GenericDeleteButton";
+import GenericTableContent from "./GenericTableContent";
 
 type TableProps<T extends Identifiable> = {
   data: T[];
@@ -50,34 +51,12 @@ const GenericTable = <T extends Identifiable>({
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
       />
-      <table className="table table-light table-striped table-hover border-dark">
-        <thead className="table-dark">
-          <tr>
-            {fields.map((field) => (
-              <th scope="col" key={field.key as string}>
-                {field.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr
-              className={
-                index === selectedIndex ? "table-primary border-dark" : ""
-              }
-              key={index}
-              onClick={() => {
-                setSelectedIndex(index);
-              }}
-            >
-              {fields.map((field) => (
-                <td key={field.key as string}>{String(item[field.key])}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <GenericTableContent
+        data={data}
+        fields={fields}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
     </>
   );
 };
