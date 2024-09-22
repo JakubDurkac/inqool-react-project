@@ -5,6 +5,7 @@ import GenericAddEditForm from "./GenericAddEditForm";
 import GenericActionsOnSelected from "./GenericActionsOnSelected";
 import GenericDeleteButton from "./GenericDeleteButton";
 import GenericTableContent from "./GenericTableContent";
+import FilterForm from "./FilterForm";
 
 type TableProps<T extends Identifiable> = {
   data: T[];
@@ -31,32 +32,6 @@ const GenericTable = <T extends Identifiable>({
   const [filterValues, setFilterValues] = useState<Record<string, string>>({});
   const fieldsWithoutId = fields.filter((field) => field.key !== "id");
 
-  const handleFilterChange = (key: string, value: string) => {
-    setFilterValues((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const clearFilters = () => {
-    setFilterValues({});
-  };
-
-  const renderFilterForm = () => (
-    <form>
-      {filterAttributes.map((key) => (
-        <div key={key}>
-          <input
-            type="text"
-            placeholder={`Filter by ${key}`}
-            value={filterValues[key] || ""}
-            onChange={(e) => handleFilterChange(key, e.target.value)}
-          />
-        </div>
-      ))}
-      <button type="button" onClick={clearFilters}>
-        Clear
-      </button>
-    </form>
-  );
-
   return (
     <>
       <GenericAddEditForm
@@ -80,7 +55,11 @@ const GenericTable = <T extends Identifiable>({
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
       />
-      {renderFilterForm()}
+      <FilterForm
+        filterAttributes={filterAttributes}
+        filterValues={filterValues}
+        setFilterValues={setFilterValues}
+      />
       <GenericTableContent
         data={data}
         fields={fields}
