@@ -27,7 +27,7 @@ const GenericDeleteButton = <T extends Identifiable>({
         }
       }}
     >
-      Remove Selected
+      Delete
     </button>
   );
 };

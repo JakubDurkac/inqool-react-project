@@ -12,13 +12,14 @@ interface User {
 
 const ENDPOINT = "users";
 const USER_ENTITY_FIELDS: { label: string; key: keyof User }[] = [
-  { label: "ID", key: "id" },
   { label: "Name", key: "name" },
   { label: "Gender", key: "gender" },
   { label: "Banned", key: "banned" },
+  { label: "ID", key: "id" },
 ];
 
 const FILTER_ATTRIBUTES = ["name"];
+const IS_INDEXED_TABLE = true;
 const VALIDATION_SCHEMA = z.object({
   name: z
     .string()
@@ -68,6 +69,7 @@ const Users = () => {
       validationSchema={VALIDATION_SCHEMA}
       extraActionsOnSelected={[banAction]}
       filterAttributes={FILTER_ATTRIBUTES}
+      isIndexed={IS_INDEXED_TABLE}
     />
   );
 };

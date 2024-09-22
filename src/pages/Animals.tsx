@@ -10,13 +10,14 @@ interface Animal {
 
 const ENDPOINT = "animals";
 const ANIMAL_ENTITY_FIELDS: { label: string; key: keyof Animal }[] = [
-  { label: "ID", key: "id" },
   { label: "Name", key: "name" },
   { label: "Type", key: "type" },
   { label: "Age", key: "age" },
+  { label: "ID", key: "id" },
 ];
 
 const FILTER_ATTRIBUTES = ["name", "gender"];
+const IS_INDEXED_TABLE = true;
 const VALIDATION_SCHEMA = z.object({
   name: z
     .string()
@@ -37,6 +38,7 @@ const Animals = () => {
       validationSchema={VALIDATION_SCHEMA}
       extraActionsOnSelected={[]}
       filterAttributes={FILTER_ATTRIBUTES}
+      isIndexed={IS_INDEXED_TABLE}
     />
   );
 };

@@ -16,6 +16,7 @@ type TableProps<T extends Identifiable> = {
   onDelete: (id: string) => void;
   extraActionsOnSelected: ActionOnSelected<T>[];
   filterAttributes: string[];
+  isIndexed: boolean;
 };
 
 const GenericTable = <T extends Identifiable>({
@@ -27,6 +28,7 @@ const GenericTable = <T extends Identifiable>({
   onDelete,
   extraActionsOnSelected,
   filterAttributes,
+  isIndexed,
 }: TableProps<T>) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [filterValues, setFilterValues] = useState<Record<string, string>>({});
@@ -66,6 +68,7 @@ const GenericTable = <T extends Identifiable>({
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
         filterValues={filterValues}
+        isIndexed={isIndexed}
       />
     </>
   );
