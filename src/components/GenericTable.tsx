@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ActionOnSelected, Identifiable } from "../types";
 import { ZodSchema } from "zod";
 import GenericAddEditForm from "./GenericAddEditForm";
+import GenericActionsOnSelected from "./GenericActionsOnSelected";
 
 type TableProps<T extends Identifiable> = {
   data: T[];
@@ -36,30 +37,12 @@ const GenericTable = <T extends Identifiable>({
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
       />
-      {extraActionsOnSelected.map((action, index) => {
-        const isDisabledButton = selectedIndex === -1;
-        const { newLabel, newStyleClass } = isDisabledButton
-          ? { newLabel: "", newStyleClass: "" }
-          : action.buttonOnObjectSelect(data[selectedIndex]);
-        return (
-          <button
-            key={index}
-            disabled={isDisabledButton}
-            type="button"
-            className={`btn ${
-              isDisabledButton ? "btn-outline-light" : newStyleClass
-            }`}
-            onClick={() => {
-              if (selectedIndex !== -1) {
-                setSelectedIndex(-1);
-                action.onClick(data[selectedIndex].id, data[selectedIndex]);
-              }
-            }}
-          >
-            {isDisabledButton ? action.buttonLabel : newLabel}
-          </button>
-        );
-      })}
+      <GenericActionsOnSelected
+        data={data}
+        extraActionsOnSelected={extraActionsOnSelected}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
       <button
         disabled={selectedIndex === -1}
         type="button"
