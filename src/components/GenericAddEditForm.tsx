@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ZodSchema } from "zod";
 import { Identifiable } from "../types";
+import { useState } from "react";
 
 interface FormProps<T extends Identifiable> {
   data: T[];
@@ -45,13 +46,17 @@ const GenericAddEditForm = <T extends Identifiable>({
     return value === "" || value === undefined;
   });
 
+  const [isActiveTooltip, setIsActiveTooltip] = useState(false);
+
   return (
     <form>
       {fieldsWithoutId.map((field) => (
-        <div key={field.key as string}>
+        <div className="input-container" key={field.key as string}>
           <input {...register(field.key as string)} placeholder={field.label} />
-          {errors[field.key as string] && (
-            <p>{errors[field.key as string]?.message as string}</p>
+          {errors[field.key as string] && isActiveTooltip && (
+            <span className="validation-tooltip">
+              {errors[field.key as string]?.message as string}
+            </span>
           )}
         </div>
       ))}
@@ -59,32 +64,44 @@ const GenericAddEditForm = <T extends Identifiable>({
       <button
         disabled={isAnyFieldEmpty}
         className="btn btn-outline-light"
-        onClick={handleSubmit((attributesToUpdate) => {
-          console.log(attributesToUpdate);
-          onAdd(attributesToUpdate as Partial<T>);
-          reset();
-        })}
+        onClick={handleSubmit(
+          (attributesToUpdate) => {
+            console.log(attributesToUpdate);
+            onAdd(attributesToUpdate as Partial<T>);
+            reset();
+            setIsActiveTooltip(false);
+          },
+          () => {
+            setIsActiveTooltip(true);
+          }
+        )}
       >
         Add
       </button>
       <button
         disabled={selectedIndex === -1 || areAllFieldsEmpty}
         className="btn btn-outline-light"
-        onClick={handleSubmit((attributesToUpdate) => {
-          const attributesToUpdatePartialT = attributesToUpdate as Partial<T>;
-          const filteredAttributes = fieldsWithoutId.reduce((acc, field) => {
-            // generating object that skips undefined attributes, preparing for PATCH request
-            const value = attributesToUpdatePartialT[field.key];
-            if (value !== undefined) {
-              acc[field.key] = value;
-            }
-            return acc;
-          }, {} as Partial<T>);
+        onClick={handleSubmit(
+          (attributesToUpdate) => {
+            const attributesToUpdatePartialT = attributesToUpdate as Partial<T>;
+            const filteredAttributes = fieldsWithoutId.reduce((acc, field) => {
+              // generating object that skips undefined attributes, preparing for PATCH request
+              const value = attributesToUpdatePartialT[field.key];
+              if (value !== undefined) {
+                acc[field.key] = value;
+              }
+              return acc;
+            }, {} as Partial<T>);
 
-          setSelectedIndex(-1);
-          onEdit(filteredAttributes, data[selectedIndex].id);
-          reset();
-        })}
+            setSelectedIndex(-1);
+            onEdit(filteredAttributes, data[selectedIndex].id);
+            reset();
+            setIsActiveTooltip(false);
+          },
+          () => {
+            setIsActiveTooltip(true);
+          }
+        )}
       >
         Edit
       </button>

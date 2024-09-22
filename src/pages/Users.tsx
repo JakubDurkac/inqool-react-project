@@ -23,16 +23,26 @@ const IS_INDEXED_TABLE = true;
 const VALIDATION_SCHEMA = z.object({
   name: z
     .string()
-    .min(2, "Name must be at least 2 characters long")
+    .min(2, "Too short (2+).")
     .or(z.literal(""))
     .transform((value) => (value === "" ? undefined : value)),
   gender: z
-    .enum(["female", "male", "other", ""])
+    .enum(["female", "male", "other", ""], {
+      errorMap: () => ({
+        message: 'Try "male", "female", or "other".',
+      }),
+    })
     .transform((value) => (value === "" ? undefined : value)),
-  banned: z.enum(["true", "false", ""]).transform((value) => {
-    if (value === "") return undefined;
-    return value === "true";
-  }),
+  banned: z
+    .enum(["true", "false", ""], {
+      errorMap: () => ({
+        message: 'Try "true" or "false".',
+      }),
+    })
+    .transform((value) => {
+      if (value === "") return undefined;
+      return value === "true";
+    }),
 });
 
 const Users = () => {

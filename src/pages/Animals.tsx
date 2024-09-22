@@ -25,9 +25,22 @@ const VALIDATION_SCHEMA = z.object({
     .or(z.literal(""))
     .transform((value) => (value === "" ? undefined : value)),
   type: z
-    .enum(["cat", "dog", "other", ""])
+    .enum(["cat", "dog", "other", ""], {
+      errorMap: () => ({
+        message: 'Try "cat", "dog" or "false".',
+      }),
+    })
     .transform((value) => (value === "" ? undefined : value)),
-  age: z.union([z.literal("").transform(() => undefined), z.coerce.number()]),
+  age: z.union([
+    z
+      .literal("", {
+        errorMap: () => ({
+          message: "Try number.",
+        }),
+      })
+      .transform(() => undefined),
+    z.coerce.number(),
+  ]),
 });
 
 const Animals = () => {
