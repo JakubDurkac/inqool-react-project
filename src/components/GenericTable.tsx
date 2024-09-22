@@ -66,7 +66,7 @@ const GenericTable = <T extends Identifiable>({
 
         <button
           disabled={isAnyFieldEmpty}
-          className="btn btn-outline-primary"
+          className="btn btn-outline-light"
           onClick={handleSubmit((attributesToUpdate) => {
             console.log(attributesToUpdate);
             onAdd(attributesToUpdate as Partial<T>);
@@ -77,7 +77,7 @@ const GenericTable = <T extends Identifiable>({
         </button>
         <button
           disabled={selectedIndex === -1 || areAllFieldsEmpty}
-          className="btn btn-outline-primary"
+          className="btn btn-outline-light"
           onClick={handleSubmit((attributesToUpdate) => {
             const attributesToUpdatePartialT = attributesToUpdate as Partial<T>;
             const filteredAttributes = fields.reduce((acc, field) => {
@@ -108,7 +108,7 @@ const GenericTable = <T extends Identifiable>({
             disabled={isDisabledButton}
             type="button"
             className={`btn ${
-              isDisabledButton ? "btn-outline-primary" : newStyleClass
+              isDisabledButton ? "btn-outline-light" : newStyleClass
             }`}
             onClick={() => {
               if (selectedIndex !== -1) {
@@ -124,7 +124,9 @@ const GenericTable = <T extends Identifiable>({
       <button
         disabled={selectedIndex === -1}
         type="button"
-        className="btn btn-outline-danger"
+        className={`btn ${
+          selectedIndex === -1 ? "btn-outline-light" : "btn-outline-danger"
+        }`}
         onClick={() => {
           if (selectedIndex !== -1) {
             setSelectedIndex(-1);
