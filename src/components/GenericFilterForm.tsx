@@ -1,16 +1,25 @@
-interface FilterProps {
+import { Identifiable } from "../types";
+
+interface FilterProps<T extends Identifiable> {
+  fields: { label: string; key: keyof T }[];
   filterAttributes: string[];
   filterValues: Record<string, string>;
   setFilterValues: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
-const FilterForm = ({
+const GenericFilterForm = <T extends Identifiable>({
+  fields,
   filterAttributes,
   filterValues,
   setFilterValues,
-}: FilterProps) => {
+}: FilterProps<T>) => {
   const handleFilterChange = (key: string, value: string) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const getFieldLabelFromKey = (key: keyof T) => {
+    const foundField = fields.find((field) => field.key === key);
+    return foundField ? foundField.label : key;
   };
 
   return (
@@ -21,7 +30,9 @@ const FilterForm = ({
             <input
               className="table-text-input"
               type="text"
-              placeholder={`Filter by ${key}`}
+              placeholder={`Filter by '${String(
+                getFieldLabelFromKey(key as keyof T)
+              )}'`}
               value={filterValues[key] || ""}
               onChange={(e) => handleFilterChange(key, e.target.value)}
             />
@@ -39,4 +50,4 @@ const FilterForm = ({
   );
 };
 
-export default FilterForm;
+export default GenericFilterForm;

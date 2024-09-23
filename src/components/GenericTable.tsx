@@ -4,7 +4,7 @@ import { ZodSchema } from "zod";
 import GenericAddEditForm from "./GenericAddEditForm";
 import GenericActionsOnSelected from "./GenericActionsOnSelected";
 import GenericTableContent from "./GenericTableContent";
-import FilterForm from "./FilterForm";
+import GenericFilterForm from "./GenericFilterForm";
 import DeleteButton from "./DeleteButton";
 
 type TableProps<T extends Identifiable> = {
@@ -46,7 +46,8 @@ const GenericTable = <T extends Identifiable>({
           onEdit={onEdit}
           selectedId={selectedId}
         />
-        <FilterForm
+        <GenericFilterForm
+          fields={fields}
           filterAttributes={filterAttributes}
           filterValues={filterValues}
           setFilterValues={setFilterValues}
