@@ -3,8 +3,8 @@ import { Identifiable } from "../types";
 interface ContentProps<T extends Identifiable> {
   data: T[];
   fields: { label: string; key: keyof T }[];
-  selectedIndex: number;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  selectedId: string;
+  setSelectedId: React.Dispatch<React.SetStateAction<string>>;
   filterValues: Record<string, string>;
   isIndexed: boolean;
 }
@@ -12,8 +12,8 @@ interface ContentProps<T extends Identifiable> {
 const GenericTableContent = <T extends Identifiable>({
   data,
   fields,
-  selectedIndex,
-  setSelectedIndex,
+  selectedId,
+  setSelectedId,
   filterValues,
   isIndexed,
 }: ContentProps<T>) => {
@@ -42,11 +42,11 @@ const GenericTableContent = <T extends Identifiable>({
         {filteredData.map((item, index) => (
           <tr
             className={
-              index === selectedIndex ? "table-warning border-dark" : ""
+              item.id === selectedId ? "table-warning border-dark" : ""
             }
-            key={index}
+            key={item.id}
             onClick={() => {
-              setSelectedIndex(index);
+              setSelectedId(item.id);
             }}
           >
             {isIndexed && (

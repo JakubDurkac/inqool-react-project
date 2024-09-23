@@ -3,9 +3,9 @@ import { ActionOnSelected, Identifiable } from "../types";
 import { ZodSchema } from "zod";
 import GenericAddEditForm from "./GenericAddEditForm";
 import GenericActionsOnSelected from "./GenericActionsOnSelected";
-import GenericDeleteButton from "./GenericDeleteButton";
 import GenericTableContent from "./GenericTableContent";
 import FilterForm from "./FilterForm";
+import DeleteButton from "./DeleteButton";
 
 type TableProps<T extends Identifiable> = {
   data: T[];
@@ -30,7 +30,7 @@ const GenericTable = <T extends Identifiable>({
   filterAttributes,
   isIndexed,
 }: TableProps<T>) => {
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedId, setSelectedId] = useState("");
   const [filterValues, setFilterValues] = useState<Record<string, string>>({});
   const fieldsWithoutId = fields.filter((field) => field.key !== "id");
 
@@ -38,13 +38,12 @@ const GenericTable = <T extends Identifiable>({
     <>
       <div className="table-tools-container">
         <GenericAddEditForm
-          data={data}
           fieldsWithoutId={fieldsWithoutId}
           validationSchema={validationSchema}
           onAdd={onAdd}
           onEdit={onEdit}
-          selectedIndex={selectedIndex}
-          setSelectedIndex={setSelectedIndex}
+          selectedId={selectedId}
+          setSelectedId={setSelectedId}
         />
         <FilterForm
           filterAttributes={filterAttributes}
@@ -53,17 +52,15 @@ const GenericTable = <T extends Identifiable>({
         />
         <div className="extra-table-tools-container">
           <div className="extra-table-tools">
-            <GenericDeleteButton
-              data={data}
+            <DeleteButton
               onDelete={onDelete}
-              selectedIndex={selectedIndex}
-              setSelectedIndex={setSelectedIndex}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
             />
             <GenericActionsOnSelected
               data={data}
               extraActionsOnSelected={extraActionsOnSelected}
-              selectedIndex={selectedIndex}
-              setSelectedIndex={setSelectedIndex}
+              selectedId={selectedId}
             />
           </div>
         </div>
@@ -71,8 +68,8 @@ const GenericTable = <T extends Identifiable>({
       <GenericTableContent
         data={data}
         fields={fields}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
         filterValues={filterValues}
         isIndexed={isIndexed}
       />

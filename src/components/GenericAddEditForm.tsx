@@ -5,23 +5,21 @@ import { Identifiable } from "../types";
 import { useState } from "react";
 
 interface FormProps<T extends Identifiable> {
-  data: T[];
   fieldsWithoutId: { label: string; key: keyof T }[];
   validationSchema: ZodSchema;
   onAdd: (object: Partial<T>) => void;
   onEdit: (object: Partial<T>, id: string) => void;
-  selectedIndex: number;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  selectedId: string;
+  setSelectedId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const GenericAddEditForm = <T extends Identifiable>({
-  data,
   fieldsWithoutId,
   validationSchema,
   onAdd,
   onEdit,
-  selectedIndex,
-  setSelectedIndex,
+  selectedId,
+  setSelectedId,
 }: FormProps<T>) => {
   const {
     register,
@@ -85,7 +83,7 @@ const GenericAddEditForm = <T extends Identifiable>({
             Add
           </button>
           <button
-            disabled={selectedIndex === -1 || areAllFieldsEmpty}
+            disabled={selectedId === "" || areAllFieldsEmpty}
             className="btn btn-outline-warning table-tool-button"
             onClick={handleSubmit(
               (attributesToUpdate) => {
@@ -103,8 +101,8 @@ const GenericAddEditForm = <T extends Identifiable>({
                   {} as Partial<T>
                 );
 
-                setSelectedIndex(-1);
-                onEdit(filteredAttributes, data[selectedIndex].id);
+                setSelectedId("");
+                onEdit(filteredAttributes, selectedId);
                 reset();
                 setIsActiveTooltip(false);
               },

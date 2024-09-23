@@ -3,23 +3,25 @@ import { ActionOnSelected, Identifiable } from "../types";
 interface ActionsProps<T extends Identifiable> {
   data: T[];
   extraActionsOnSelected: ActionOnSelected<T>[];
-  selectedIndex: number;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  selectedId: string;
 }
 
 const GenericActionsOnSelected = <T extends Identifiable>({
   data,
   extraActionsOnSelected,
-  selectedIndex,
-  setSelectedIndex,
+  selectedId,
 }: ActionsProps<T>) => {
+  const getObjectWithId = (id: string) =>
+    data.find((object) => object.id === id);
   return (
     <>
       {extraActionsOnSelected.map((action, index) => {
-        const isDisabledButton = selectedIndex === -1;
-        const { newLabel, newStyleClass } = isDisabledButton
-          ? { newLabel: "", newStyleClass: "" }
-          : action.buttonOnObjectSelect(data[selectedIndex]);
+        const isDisabledButton = selectedId === "";
+        const selectedObject = getObjectWithId(selectedId);
+        const { newLabel, newStyleClass } =
+          isDisabledButton || !selectedObject
+            ? { newLabel: "", newStyleClass: "" }
+            : action.buttonOnObjectSelect(selectedObject);
         return (
           <button
             key={index}
@@ -29,9 +31,9 @@ const GenericActionsOnSelected = <T extends Identifiable>({
               isDisabledButton ? "btn-outline-warning" : newStyleClass
             }`}
             onClick={() => {
-              if (selectedIndex !== -1) {
-                setSelectedIndex(-1);
-                action.onClick(data[selectedIndex].id, data[selectedIndex]);
+              if (selectedId !== "") {
+                const selectedObject = getObjectWithId(selectedId);
+                selectedObject && action.onClick(selectedId, selectedObject);
               }
             }}
           >
