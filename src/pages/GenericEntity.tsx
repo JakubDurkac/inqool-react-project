@@ -66,6 +66,7 @@ const GenericEntity = <T extends Identifiable>({
 
   return (
     <GenericTable
+      endpoint={endpoint}
       data={data}
       fields={entityFields}
       validationSchema={validationSchema}

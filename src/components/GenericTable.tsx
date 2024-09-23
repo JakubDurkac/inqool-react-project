@@ -8,6 +8,7 @@ import FilterForm from "./FilterForm";
 import DeleteButton from "./DeleteButton";
 
 type TableProps<T extends Identifiable> = {
+  endpoint: string;
   data: T[];
   fields: { label: string; key: keyof T }[];
   validationSchema: ZodSchema;
@@ -20,6 +21,7 @@ type TableProps<T extends Identifiable> = {
 };
 
 const GenericTable = <T extends Identifiable>({
+  endpoint,
   data,
   fields,
   validationSchema,
@@ -50,6 +52,10 @@ const GenericTable = <T extends Identifiable>({
           setFilterValues={setFilterValues}
         />
         <div className="extra-table-tools-container">
+          <div className="table-header">{endpoint}</div>
+          <div className="table-hint">
+            &#128712; click on a row to interact with it
+          </div>
           <div className="extra-table-tools">
             <DeleteButton
               onDelete={onDelete}

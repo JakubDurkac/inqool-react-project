@@ -36,7 +36,7 @@
 }
 
 .table-tool-button {
-  width: 87px;
+  width: 116px;
   border-width: 2px !important;
   font-weight: bold !important;
 }
@@ -45,6 +45,11 @@
   display: flex;
   flex-direction: row;
   gap: 18px;
+}
+
+.extra-table-tools {
+  position: absolute;
+  bottom: 15px;
 }
 
 .table-add-edit-form-container,
@@ -60,12 +65,12 @@
 .table-add-edit-form-container,
 .table-filter-form-container {
   border-right: solid 2px var(--secondary-color);
-
 }
 
 .table-text-input {
   background-color: var(--base-color);
   border: solid 2px var(--secondary-color);
+  width: 250px;
   border-radius: 5px;
   color: white;
 }
@@ -73,4 +78,14 @@
 .table-text-input::placeholder {
   color: var(--secondary-color);
   filter: opacity(0.7);
+}
+
+.table-header {
+  font-size: 40px;
+  color: var(--secondary-color);
+}
+
+.table-hint {
+  font-size: 25px;
+  color: var(--secondary-color);
 }
