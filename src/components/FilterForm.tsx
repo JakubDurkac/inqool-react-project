@@ -14,21 +14,28 @@ const FilterForm = ({
   };
 
   return (
-    <form>
-      {filterAttributes.map((key) => (
-        <div key={key}>
-          <input
-            type="text"
-            placeholder={`Filter by ${key}`}
-            value={filterValues[key] || ""}
-            onChange={(e) => handleFilterChange(key, e.target.value)}
-          />
-        </div>
-      ))}
-      <button type="button" onClick={() => setFilterValues({})}>
-        Clear
-      </button>
-    </form>
+    <div className="table-filter-form-container">
+      <form>
+        {filterAttributes.map((key) => (
+          <div key={key} className="input-container">
+            <input
+              className="table-text-input"
+              type="text"
+              placeholder={`Filter by ${key}`}
+              value={filterValues[key] || ""}
+              onChange={(e) => handleFilterChange(key, e.target.value)}
+            />
+          </div>
+        ))}
+        <button
+          className="btn btn-outline-warning table-tool-button"
+          type="button"
+          onClick={() => setFilterValues({})}
+        >
+          Clear
+        </button>
+      </form>
+    </div>
   );
 };
 

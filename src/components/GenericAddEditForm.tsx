@@ -49,63 +49,75 @@ const GenericAddEditForm = <T extends Identifiable>({
   const [isActiveTooltip, setIsActiveTooltip] = useState(false);
 
   return (
-    <form>
-      {fieldsWithoutId.map((field) => (
-        <div className="input-container" key={field.key as string}>
-          <input {...register(field.key as string)} placeholder={field.label} />
-          {errors[field.key as string] && isActiveTooltip && (
-            <span className="validation-tooltip">
-              {errors[field.key as string]?.message as string}
-            </span>
-          )}
-        </div>
-      ))}
+    <div className="table-add-edit-form-container">
+      <form>
+        {fieldsWithoutId.map((field) => (
+          <div className="input-container" key={field.key as string}>
+            <input
+              className="table-text-input"
+              {...register(field.key as string)}
+              placeholder={`Enter '${field.label}'`}
+            />
+            {errors[field.key as string] && isActiveTooltip && (
+              <span className="validation-tooltip">
+                {errors[field.key as string]?.message as string}
+              </span>
+            )}
+          </div>
+        ))}
 
-      <button
-        disabled={isAnyFieldEmpty}
-        className="btn btn-outline-light"
-        onClick={handleSubmit(
-          (attributesToUpdate) => {
-            console.log(attributesToUpdate);
-            onAdd(attributesToUpdate as Partial<T>);
-            reset();
-            setIsActiveTooltip(false);
-          },
-          () => {
-            setIsActiveTooltip(true);
-          }
-        )}
-      >
-        Add
-      </button>
-      <button
-        disabled={selectedIndex === -1 || areAllFieldsEmpty}
-        className="btn btn-outline-light"
-        onClick={handleSubmit(
-          (attributesToUpdate) => {
-            const attributesToUpdatePartialT = attributesToUpdate as Partial<T>;
-            const filteredAttributes = fieldsWithoutId.reduce((acc, field) => {
-              // generating object that skips undefined attributes, preparing for PATCH request
-              const value = attributesToUpdatePartialT[field.key];
-              if (value !== undefined) {
-                acc[field.key] = value;
+        <div className="add-edit-buttons-container">
+          <button
+            disabled={isAnyFieldEmpty}
+            className="btn btn-outline-warning table-tool-button"
+            onClick={handleSubmit(
+              (attributesToUpdate) => {
+                console.log(attributesToUpdate);
+                onAdd(attributesToUpdate as Partial<T>);
+                reset();
+                setIsActiveTooltip(false);
+              },
+              () => {
+                setIsActiveTooltip(true);
               }
-              return acc;
-            }, {} as Partial<T>);
+            )}
+          >
+            Add
+          </button>
+          <button
+            disabled={selectedIndex === -1 || areAllFieldsEmpty}
+            className="btn btn-outline-warning table-tool-button"
+            onClick={handleSubmit(
+              (attributesToUpdate) => {
+                const attributesToUpdatePartialT =
+                  attributesToUpdate as Partial<T>;
+                const filteredAttributes = fieldsWithoutId.reduce(
+                  (acc, field) => {
+                    // generating object that skips undefined attributes, preparing for PATCH request
+                    const value = attributesToUpdatePartialT[field.key];
+                    if (value !== undefined) {
+                      acc[field.key] = value;
+                    }
+                    return acc;
+                  },
+                  {} as Partial<T>
+                );
 
-            setSelectedIndex(-1);
-            onEdit(filteredAttributes, data[selectedIndex].id);
-            reset();
-            setIsActiveTooltip(false);
-          },
-          () => {
-            setIsActiveTooltip(true);
-          }
-        )}
-      >
-        Edit
-      </button>
-    </form>
+                setSelectedIndex(-1);
+                onEdit(filteredAttributes, data[selectedIndex].id);
+                reset();
+                setIsActiveTooltip(false);
+              },
+              () => {
+                setIsActiveTooltip(true);
+              }
+            )}
+          >
+            Edit
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

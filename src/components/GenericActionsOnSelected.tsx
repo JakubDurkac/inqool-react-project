@@ -25,8 +25,8 @@ const GenericActionsOnSelected = <T extends Identifiable>({
             key={index}
             disabled={isDisabledButton}
             type="button"
-            className={`btn ${
-              isDisabledButton ? "btn-outline-light" : newStyleClass
+            className={`table-tool-button btn ${
+              isDisabledButton ? "btn-outline-warning" : newStyleClass
             }`}
             onClick={() => {
               if (selectedIndex !== -1) {

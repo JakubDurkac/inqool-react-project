@@ -17,9 +17,7 @@ const GenericDeleteButton = <T extends Identifiable>({
     <button
       disabled={selectedIndex === -1}
       type="button"
-      className={`btn ${
-        selectedIndex === -1 ? "btn-outline-light" : "btn-outline-danger"
-      }`}
+      className="table-tool-button btn btn-outline-danger"
       onClick={() => {
         if (selectedIndex !== -1) {
           setSelectedIndex(-1);

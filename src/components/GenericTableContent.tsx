@@ -41,7 +41,9 @@ const GenericTableContent = <T extends Identifiable>({
       <tbody>
         {filteredData.map((item, index) => (
           <tr
-            className={index === selectedIndex ? "table-info border-dark" : ""}
+            className={
+              index === selectedIndex ? "table-warning border-dark" : ""
+            }
             key={index}
             onClick={() => {
               setSelectedIndex(index);

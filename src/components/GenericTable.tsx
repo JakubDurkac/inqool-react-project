@@ -36,32 +36,38 @@ const GenericTable = <T extends Identifiable>({
 
   return (
     <>
-      <GenericAddEditForm
-        data={data}
-        fieldsWithoutId={fieldsWithoutId}
-        validationSchema={validationSchema}
-        onAdd={onAdd}
-        onEdit={onEdit}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
-      />
-      <GenericActionsOnSelected
-        data={data}
-        extraActionsOnSelected={extraActionsOnSelected}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
-      />
-      <GenericDeleteButton
-        data={data}
-        onDelete={onDelete}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
-      />
-      <FilterForm
-        filterAttributes={filterAttributes}
-        filterValues={filterValues}
-        setFilterValues={setFilterValues}
-      />
+      <div className="table-tools-container">
+        <GenericAddEditForm
+          data={data}
+          fieldsWithoutId={fieldsWithoutId}
+          validationSchema={validationSchema}
+          onAdd={onAdd}
+          onEdit={onEdit}
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+        />
+        <FilterForm
+          filterAttributes={filterAttributes}
+          filterValues={filterValues}
+          setFilterValues={setFilterValues}
+        />
+        <div className="extra-table-tools-container">
+          <div className="extra-table-tools">
+            <GenericDeleteButton
+              data={data}
+              onDelete={onDelete}
+              selectedIndex={selectedIndex}
+              setSelectedIndex={setSelectedIndex}
+            />
+            <GenericActionsOnSelected
+              data={data}
+              extraActionsOnSelected={extraActionsOnSelected}
+              selectedIndex={selectedIndex}
+              setSelectedIndex={setSelectedIndex}
+            />
+          </div>
+        </div>
+      </div>
       <GenericTableContent
         data={data}
         fields={fields}
