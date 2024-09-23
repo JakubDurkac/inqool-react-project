@@ -17,6 +17,7 @@
   background-color: var(--base-color);
   border-bottom: solid 3px var(--secondary-color);
   padding: 10px 0px 10px 0px;
+  min-height: 216px;
 }
 
 .validation-tooltip {
@@ -56,7 +57,7 @@
 .table-filter-form-container,
 .extra-table-tools-container {
   padding: 5px 15px 5px 15px;
-  max-height: 230px;
+  max-height: 195px;
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--ternary-color) var(--base-color);

@@ -16,7 +16,7 @@ const ANIMAL_ENTITY_FIELDS: { label: string; key: keyof Animal }[] = [
   { label: "ID", key: "id" },
 ];
 
-const FILTER_ATTRIBUTES = ["name", "gender"];
+const FILTER_ATTRIBUTES = ["name", "type", "age"];
 const IS_INDEXED_TABLE = true;
 const VALIDATION_SCHEMA = z.object({
   name: z

@@ -18,7 +18,7 @@ const USER_ENTITY_FIELDS: { label: string; key: keyof User }[] = [
   { label: "ID", key: "id" },
 ];
 
-const FILTER_ATTRIBUTES = ["name"];
+const FILTER_ATTRIBUTES = ["name", "gender", "banned"];
 const IS_INDEXED_TABLE = true;
 const VALIDATION_SCHEMA = z.object({
   name: z
