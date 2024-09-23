@@ -22,6 +22,10 @@ const GenericFilterForm = <T extends Identifiable>({
     return foundField ? foundField.label : key;
   };
 
+  const areAllFiltersEmpty = Object.values(filterValues).every(
+    (value) => value === "" || value === undefined
+  );
+
   return (
     <div className="table-filter-form-container">
       <form>
@@ -39,6 +43,7 @@ const GenericFilterForm = <T extends Identifiable>({
           </div>
         ))}
         <button
+          disabled={areAllFiltersEmpty}
           className="btn btn-outline-warning table-tool-button"
           type="button"
           onClick={() => setFilterValues({})}
