@@ -85,7 +85,24 @@
   color: var(--secondary-color);
 }
 
-.table-hint {
+.table-hint, .home-header, .no-page-header {
   font-size: 25px;
   color: var(--secondary-color);
+}
+
+.home-container, .no-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.home-links {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
 }
