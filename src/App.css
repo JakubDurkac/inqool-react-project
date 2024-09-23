@@ -2,6 +2,7 @@
   --base-color: #212529;
   --secondary-color: #ffc107;
   --placeholder-text-color: white;
+  --ternary-color: #2d2f31;
 }
 
 #root, body, html {
@@ -15,6 +16,7 @@
   top: 0;
   background-color: var(--base-color);
   border-bottom: solid 3px var(--secondary-color);
+  padding: 10px 0px 10px 0px;
 }
 
 .validation-tooltip {
@@ -34,7 +36,7 @@
 }
 
 .table-tool-button {
-  width: 89px;
+  width: 87px;
   border-width: 2px !important;
   font-weight: bold !important;
 }
@@ -42,19 +44,23 @@
 .add-edit-buttons-container, .extra-table-tools {
   display: flex;
   flex-direction: row;
-  gap: 13px;
+  gap: 18px;
 }
 
 .table-add-edit-form-container,
 .table-filter-form-container,
 .extra-table-tools-container {
-  padding: 15px;
+  padding: 5px 15px 5px 15px;
+  max-height: 230px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ternary-color) var(--base-color);
 }
 
 .table-add-edit-form-container,
 .table-filter-form-container {
   border-right: solid 2px var(--secondary-color);
-  border-radius: 10px;
+
 }
 
 .table-text-input {
