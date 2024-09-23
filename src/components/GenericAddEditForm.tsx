@@ -10,7 +10,6 @@ interface FormProps<T extends Identifiable> {
   onAdd: (object: Partial<T>) => void;
   onEdit: (object: Partial<T>, id: string) => void;
   selectedId: string;
-  setSelectedId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const GenericAddEditForm = <T extends Identifiable>({
@@ -19,7 +18,6 @@ const GenericAddEditForm = <T extends Identifiable>({
   onAdd,
   onEdit,
   selectedId,
-  setSelectedId,
 }: FormProps<T>) => {
   const {
     register,
@@ -101,7 +99,6 @@ const GenericAddEditForm = <T extends Identifiable>({
                   {} as Partial<T>
                 );
 
-                setSelectedId("");
                 onEdit(filteredAttributes, selectedId);
                 reset();
                 setIsActiveTooltip(false);

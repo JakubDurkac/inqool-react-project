@@ -43,7 +43,6 @@ const GenericTable = <T extends Identifiable>({
           onAdd={onAdd}
           onEdit={onEdit}
           selectedId={selectedId}
-          setSelectedId={setSelectedId}
         />
         <FilterForm
           filterAttributes={filterAttributes}
