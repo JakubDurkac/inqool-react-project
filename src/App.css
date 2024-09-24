@@ -114,3 +114,8 @@
   flex-direction: row;
   gap: 18px;
 }
+
+.database-choice-container {
+  position: absolute;
+  right: 15px;
+}

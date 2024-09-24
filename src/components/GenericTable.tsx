@@ -6,6 +6,7 @@ import GenericActionsOnSelected from "./GenericActionsOnSelected";
 import GenericTableContent from "./GenericTableContent";
 import GenericFilterForm from "./GenericFilterForm";
 import DeleteButton from "./DeleteButton";
+import { Link } from "react-router-dom";
 
 type TableProps<T extends Identifiable> = {
   endpoint: string;
@@ -69,6 +70,13 @@ const GenericTable = <T extends Identifiable>({
               selectedId={selectedId}
             />
           </div>
+        </div>
+        <div className="database-choice-container">
+          <Link to="/">
+            <button className="btn btn-outline-warning table-tool-button">
+              Databases
+            </button>
+          </Link>
         </div>
       </div>
       <GenericTableContent
