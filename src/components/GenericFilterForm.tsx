@@ -26,6 +26,8 @@ const GenericFilterForm = <T extends Identifiable>({
     (value) => value === "" || value === undefined
   );
 
+  // generate text inputs for each given filter attribute
+  // generate button to clear the text inputs
   return (
     <div className="table-filter-form-container">
       <form>

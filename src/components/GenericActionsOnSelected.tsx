@@ -13,6 +13,8 @@ const GenericActionsOnSelected = <T extends Identifiable>({
 }: ActionsProps<T>) => {
   const getObjectWithId = (id: string) =>
     data.find((object) => object.id === id);
+
+  // generate button for each given action defined by specific entity
   return (
     <>
       {extraActionsOnSelected.map((action, index) => {

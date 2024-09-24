@@ -29,21 +29,23 @@ const GenericAddEditForm = <T extends Identifiable>({
     resolver: zodResolver(validationSchema),
   });
 
+  const [isActiveTooltip, setIsActiveTooltip] = useState(false);
+
+  // watch form fields - add/edit buttons can be disabled based on the state of the forms
   const formValues = watch();
-  // check if all inputs are empty
   const areAllFieldsEmpty = fieldsWithoutId.every((field) => {
     const value = formValues[field.key as string];
     return value === "" || value === undefined;
   });
 
-  // check if there are any empty fields
   const isAnyFieldEmpty = fieldsWithoutId.some((field) => {
     const value = formValues[field.key as string];
     return value === "" || value === undefined;
   });
 
-  const [isActiveTooltip, setIsActiveTooltip] = useState(false);
-
+  // generate text inputs for each entity attribute except for id (assigned by API)
+  // generate add button
+  // generate edit button
   return (
     <div className="table-add-edit-form-container">
       <form>

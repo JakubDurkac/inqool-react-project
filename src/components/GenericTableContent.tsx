@@ -19,13 +19,18 @@ const GenericTableContent = <T extends Identifiable>({
 }: ContentProps<T>) => {
   const filteredData = data.filter((item) =>
     Object.entries(filterValues).every(([key, filterValue]) => {
-      if (!filterValue) return true; // Include if no filter applied
+      if (!filterValue) {
+        return true; // include item if filter is empty
+      }
+
+      // include item if its attribute is a substring of the given filter value
       return String(item[key as keyof T])
         .toLowerCase()
         .includes(filterValue.toLowerCase());
     })
   );
 
+  // generate table header and contents based on given table schema <fields> and <filteredData>
   return (
     <table className="table table-light table-striped table-hover border-dark">
       <thead className="table-dark">
