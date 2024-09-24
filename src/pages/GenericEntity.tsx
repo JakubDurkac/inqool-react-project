@@ -61,8 +61,10 @@ const GenericEntity = <T extends Identifiable>({
     },
   });
 
-  if (isLoading || !data) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isLoading || !data)
+    return <div className="fetch-loading-header">Loading...</div>;
+  if (error)
+    return <div className="fetch-error-header">Error: {error.message}</div>;
 
   return (
     <GenericTable

@@ -16,18 +16,18 @@ const ANIMAL_ENTITY_FIELDS: { label: string; key: keyof Animal }[] = [
   { label: "ID", key: "id" },
 ];
 
-const FILTER_ATTRIBUTES = ["name", "type", "age"];
+const FILTER_ATTRIBUTES = ["name", "type"];
 const IS_INDEXED_TABLE = true;
 const VALIDATION_SCHEMA = z.object({
   name: z
     .string()
-    .min(2, "Name must be at least 2 characters long")
+    .min(2, "Too short (2+).")
     .or(z.literal(""))
     .transform((value) => (value === "" ? undefined : value)),
   type: z
     .enum(["cat", "dog", "other", ""], {
       errorMap: () => ({
-        message: 'Try "cat", "dog" or "false".',
+        message: 'Try "cat", "dog" or "other".',
       }),
     })
     .transform((value) => (value === "" ? undefined : value)),
